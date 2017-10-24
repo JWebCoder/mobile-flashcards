@@ -4,11 +4,18 @@ import React, {Component} from 'react'
 import { StackNavigator } from 'react-navigation';
 
 // native
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native'
+import { StyleSheet, Text, View, AsyncStorage, StatusBar, Platform } from 'react-native'
+import { Constants } from 'expo'
+
+// utils
+import { setLocalNotification } from './helpers/utils'
 
 // views
 import Decks from './views/Decks'
 import DeckDetails from './views/DeckDetails'
+import AddCard from './views/AddCard'
+import AddDeck from './views/AddDeck'
+import Quiz from './views/Quiz'
 
 const Stack = StackNavigator({
   Decks: {
@@ -16,22 +23,33 @@ const Stack = StackNavigator({
   },
   DeckDetails: {
     screen: DeckDetails
+  },
+  AddCard: {
+    screen: AddCard
+  },
+  Quiz: {
+    screen: Quiz
+  },
+  AddDeck: {
+    screen: AddDeck
+  }
+}, {
+  cardStyle: {
+    paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
   }
 })
 
 export default class App extends Component {
+
+  componentDidMount() {
+    setLocalNotification()
+  }
+
   render() {
     return (
-      <Stack/>
+      <View style={{flex:1}}>
+        <Stack/>
+      </View>
     )
   }
 }
-
-const styles: StyleSheet.Styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
